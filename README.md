@@ -20,15 +20,11 @@ Assurez-vous d'avoir les éléments suivants installés sur votre machine :
     cd projet-sncf/backend
     ```
 
-2. Créez un environnement virtuel et activez-le :
-    ```sh
-    python -m venv env
-    source env/bin/activate  # Sur Windows, utilisez `env\Scripts\activate`
-    ```
-
+2. Créez un environnement virtuel et activez-le 
+   
 3. Installez les dépendances :
     ```sh
-    pip install -r requirements.txt
+    pip install 
     ```
 
 4. Créez un fichier `.env` dans le répertoire [backend](http://_vscodecontentref_/0) et ajoutez les variables d'environnement nécessaires :
