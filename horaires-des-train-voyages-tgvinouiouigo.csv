@@ -1,0 +1,6 @@
+﻿Données;Format;Download
+Horaires des lignes TGV en temps reel;GTFS-RT;https://proxy.transport.data.gouv.fr/resource/sncf-tgv-gtfs-rt-trip-updates
+Informations temps réel sur les trains TER, Intercités et TGV;SIRI SX LITE;https://proxy.transport.data.gouv.fr/resource/sncf-siri-lite-situation-exchange
+Informations temps réel sur les trains TER, Intercités et TGV;GTFS-RT;https://proxy.transport.data.gouv.fr/resource/sncf-gtfs-rt-service-alerts
+Horaires des lignes TGV;NeTEx;https://eu.ftp.opendatasoft.com/sncf/plandata/export-voyages-netex-last.zip
+Horaires des lignes TGV;GTFS;https://eu.ftp.opendatasoft.com/sncf/plandata/export_gtfs_voyages.zip
