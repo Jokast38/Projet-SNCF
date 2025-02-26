@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query, HTTPException
+from fastapi import FastAPI, Query, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import MongoClient
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -68,36 +68,33 @@ def car_serializer(car) -> dict:
     }
 
 # 📌 3. Routes API 🚗
-@app.post("/import-cars/")
-async def import_cars():
+# ➤ Ajouter une voiture via un formulaire
+@app.post("/import-car", response_model=dict)
+async def import_car(
+    make: str = Form(...),
+    model: str = Form(...),
+    year: int = Form(...)
+):
     headers = {
         "X-Api-Key": API_NINJAS_KEY
     }
     params = {
-        "make": "Ford"
+        "make": make,
+        "model": model,
+        "year": year
     }
-    
-    # Ajoutez des logs pour vérifier les valeurs des variables
-    print(f"API_NINJAS_KEY: {API_NINJAS_KEY}")
-    print(f"API_NINJAS_URL: {API_NINJAS_URL}")
-    print(f"Params: {params}")
-    
     response = requests.get(API_NINJAS_URL, headers=headers, params=params)
-    
-    # Ajoutez des logs pour afficher le statut de la réponse et le contenu de la réponse en cas d'erreur
     if response.status_code != 200:
-        print(f"Status Code: {response.status_code}")
-        print(f"Response Content: {response.content}")
         raise HTTPException(status_code=response.status_code, detail="Erreur lors de la récupération des données de l'API")
-
+    
     cars_data = response.json()
     for car_data in cars_data:
         car = Car(
             make=car_data["make"],
             model=car_data["model"],
             year=car_data["year"],
-            price=car_data.get("price", 0.0),  # Utilisez get avec une valeur par défaut
-            image=car_data.get("image", ""),  # Utilisez get avec une valeur par défaut
+            price=car_data.get("price", 0.0),
+            image=car_data.get("image", ""),
             city_mpg=car_data["city_mpg"],
             car_class=car_data["class"],
             combination_mpg=car_data["combination_mpg"],
@@ -111,12 +108,6 @@ async def import_cars():
         await cars_collection.insert_one(car.dict())
 
     return {"message": "Données importées avec succès"}
-
-# ➤ Ajouter une voiture
-@app.post("/cars/", response_model=dict)
-async def add_car(car: Car):
-    new_car = await cars_collection.insert_one(car.dict())
-    return {"message": "Voiture ajoutée avec succès", "id": str(new_car.inserted_id)}
 
 # ➤ Récupérer toutes les voitures avec filtres
 @app.get("/cars/", response_model=List[dict])

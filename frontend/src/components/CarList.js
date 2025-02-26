@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './CarList.css';
+import './css/CarList.css';
 import $ from 'jquery';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -13,9 +13,18 @@ const CarList = () => {
         make: ''
     });
 
+    const fetchCars = useCallback(async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/cars', { params: filters });
+            setCars(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }, [filters]);
+
     useEffect(() => {
         fetchCars();
-    }, []);
+    }, [fetchCars]);
 
     useEffect(() => {
         const $slider = $('.slider');
@@ -61,15 +70,6 @@ const CarList = () => {
         }
     }, []);
 
-    const fetchCars = async () => {
-        try {
-            const response = await axios.get('http://127.0.0.1:8000/cars', { params: filters });
-            setCars(response.data);
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     const createCarImage = (car, angle = '29') => {
         const url = new URL("https://cdn.imagin.studio/getimage");
         const { make, year, model } = car;
@@ -87,14 +87,18 @@ const CarList = () => {
 
     return (
         <div className="car-list">
-            <h2>Liste des voitures 🚗</h2>
-            <input type="text" placeholder="Marque" onChange={(e) => setFilters({ ...filters, make: e.target.value })} />
-            <button onClick={fetchCars}>Rechercher 🔍</button>
+            <div className="search-container">
+                <h2>Liste des voitures 🚗</h2>
+                <div>
+                    <input type="text" placeholder="Marque" onChange={(e) => setFilters({ ...filters, make: e.target.value })} />
+                    <button onClick={fetchCars}>Rechercher 🔍</button>
+                </div>
+            </div>
             
             <div className="car-cards">
                 {cars.map(car => (
                     <div key={car.id} className="car-card">
-                        <Link to={`/car/${car.id}`}>
+                        <Link to={`/car/${car.make}/${car.model}/${car.year}`}>
                             <h3>{car.make} {car.model}</h3>
                             <p>Année: {car.year}</p>
                             <p className="price">Prix: {car.price} €</p>
@@ -108,7 +112,7 @@ const CarList = () => {
                             <p>Type de carburant: {car.fuel_type}</p>
                             <p>Consommation sur autoroute: {car.highway_mpg} MPG</p>
                         </Link>
-                        <button className="btn">Ajouter au panier<span className="bg"></span></button>
+                        <Link to={`/car/${car.make}/${car.model}/${car.year}`} className="btn">Voir Détails<span className="bg"></span></Link>
                     </div>
                 ))}
             </div>

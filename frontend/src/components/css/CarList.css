@@ -1,20 +1,24 @@
-.car-list {
-    padding: 20px;
-}
-
-.car-list h2 {
-    text-align: center;
+/* Styles pour centrer le titre et la barre de recherche */
+.search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-.car-list input {
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.search-container h2 {
+    margin-bottom: 20px;
 }
 
-.car-list button {
+.search-container input {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.search-container button {
     padding: 10px 20px;
     background-color: #007bff;
     color: white;
@@ -23,10 +27,11 @@
     cursor: pointer;
 }
 
-.car-list button:hover {
+.search-container button:hover {
     background-color: #0056b3;
 }
 
+/* Styles pour les cartes de voitures */
 .car-cards {
     display: flex;
     flex-wrap: wrap;
@@ -60,6 +65,12 @@
 
 .car-card p {
     margin: 5px 0;
+}
+
+/* Retirer le soulignement des liens et remettre les textes à la normale */
+.car-card a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .car-card .price {
