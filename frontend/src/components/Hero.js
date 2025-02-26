@@ -11,23 +11,23 @@ const Hero = () => {
     const [car, setCar] = useState(null);
 
     useEffect(() => {
+        const fetchCar = async () => {
+            try {
+                const response = await axios.get(`http://127.0.0.1:8000/cars`, {
+                    params: { make, model, year }
+                });
+                if (response.data.length > 0) {
+                    setCar(response.data[0]);
+                } else {
+                    console.error("No car found with the specified parameters.");
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
         fetchCar();
     }, [make, model, year]);
-
-    const fetchCar = async () => {
-        try {
-            const response = await axios.get(`http://127.0.0.1:8000/cars`, {
-                params: { make, model, year }
-            });
-            if (response.data.length > 0) {
-                setCar(response.data[0]);
-            } else {
-                console.error("No car found with the specified parameters.");
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
 
     const createCarImage = (car, angle = '29') => {
         const url = new URL("https://cdn.imagin.studio/getimage");
