@@ -11,10 +11,9 @@ Ce projet est une application web pour gérer une liste de voitures, permettant 
 
 ## Prérequis
 
-- Node.js (version 14 ou supérieure)
+- React.js 
 - Python (version 3.8 ou supérieure)
 - MongoDB
-- WAMP (ou tout autre serveur web local)
 
 ## Installation
 
