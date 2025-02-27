@@ -1,5 +1,6 @@
-from fastapi import FastAPI, Query, HTTPException, Form
+from fastapi import FastAPI, Query, HTTPException, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pymongo import MongoClient
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
@@ -8,6 +9,7 @@ from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
 import requests
+from exceptions import CarNotFoundException, CarUpdateException
 
 load_dotenv()
 
@@ -83,8 +85,26 @@ def car_serializer(car) -> dict:
         "highway_mpg": car.get("highway_mpg", 0),  # Utiliser get pour fournir une valeur par défaut
         "transmission": car.get("transmission", "")
     }
+
+# Gestionnaire d'exceptions pour CarNotFoundException
+@app.exception_handler(CarNotFoundException)
+async def car_not_found_exception_handler(request: Request, exc: CarNotFoundException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"message": exc.detail},
+    )
+
+# Gestionnaire d'exceptions pour CarUpdateException
+@app.exception_handler(CarUpdateException)
+async def car_update_exception_handler(request: Request, exc: CarUpdateException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"message": exc.detail},
+    )
+
 # 📌 3. Routes API 🚗
 # ➤ Ajouter une voiture via un formulaire
+
 @app.post("/import-car", response_model=dict)
 async def import_car(
     make: str = Form(...),
@@ -127,36 +147,24 @@ async def import_car(
 
 # ➤ Récupérer toutes les voitures avec filtres
 @app.get("/cars/", response_model=List[dict])
-async def get_cars(
-    make: Optional[str] = Query(None, description="Filtrer par marque"),
-    model: Optional[str] = Query(None, description="Filtrer par modèle"),
-    year: Optional[int] = Query(None, description="Filtrer par année"),
-    min_price: Optional[float] = Query(None, description="Prix minimum"),
-    max_price: Optional[float] = Query(None, description="Prix maximum")
-):
-    filters = {}
+async def get_cars(make: Optional[str] = None, model: Optional[str] = None, year: Optional[int] = None):
+    query = {}
     if make:
-        filters["make"] = {"$regex": make, "$options": "i"}
+        query["make"] = {"$regex": make, "$options": "i"}
     if model:
-        filters["model"] = {"$regex": model, "$options": "i"}
+        query["model"] = {"$regex": model, "$options": "i"}
     if year:
-        filters["year"] = year
-    if min_price or max_price:
-        filters["price"] = {}
-        if min_price:
-            filters["price"]["$gte"] = min_price
-        if max_price:
-            filters["price"]["$lte"] = max_price
+        query["year"] = year
 
-    cars = await cars_collection.find(filters).to_list(100)
-    return [car_serializer(car) for car in cars]
+    cars = list(cars_collection.find(query))
+    return cars
 
 # ➤ Récupérer une voiture par ID
 @app.get("/cars/{car_id}", response_model=dict)
 async def get_car(car_id: str):
     car = await cars_collection.find_one({"_id": ObjectId(car_id)})
     if not car:
-        raise HTTPException(status_code=404, detail="Voiture non trouvée")
+        raise CarNotFoundException(car_id)
     return car_serializer(car)
 
 # ➤ Supprimer une voiture
@@ -164,7 +172,7 @@ async def get_car(car_id: str):
 async def delete_car(car_id: str):
     result = await cars_collection.delete_one({"_id": ObjectId(car_id)})
     if result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="Voiture non trouvée")
+        raise CarNotFoundException(car_id)
     return {"message": "Voiture supprimée"}
 
 @app.put("/car/{make}/{model}/{year}", response_model=dict)
@@ -178,8 +186,7 @@ async def update_car(make: str, model: str, year: int, car_update: CarUpdate):
         updated_car = await cars_collection.find_one({"make": make, "model": model, "year": year})
         updated_car["_id"] = str(updated_car["_id"])
         return updated_car
-    raise HTTPException(status_code=404, detail="Car not found")
-
+    raise CarUpdateException(make, model, year)
 
 # ➤ Calculer le nombre total de véhicules
 @app.get("/total-vehicles", response_model=dict)

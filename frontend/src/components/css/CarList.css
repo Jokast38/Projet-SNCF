@@ -17,20 +17,20 @@
     text-align: center;
 }
 
+.search-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 .search-container input {
     padding: 10px;
+    font-size: 16px;
     margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 300px;
 }
 
 .search-container button {
     padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    font-size: 16px;
     cursor: pointer;
 }
 
@@ -153,15 +153,108 @@
 }
 
 .pagination button {
-    padding: 10px 15px;
-    margin: 0 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
     cursor: pointer;
+    margin: 0 5px;
+    border: none;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
 }
 
 .pagination button:hover {
-    background-color: #007bff;
+    background-color: #555;
+}
+
+
+.btn-edit {
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    background-color: #4CAF50;
+    text-decoration: none;
+}
+
+.btn-edit:hover {
+    background-color: #45a049;
+}
+
+h2 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.filter-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.filter-buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #333;
+    color: white;
+    border-radius: 5px;
+}
+
+.filter-buttons button:hover {
+    background-color: #555;
+}
+
+/* Styles pour les suggestions d'auto-complétion */
+.react-autosuggest__container {
+    position: relative;
+}
+
+.react-autosuggest__input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.react-autosuggest__input--focused {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+.react-autosuggest__suggestions-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.react-autosuggest__suggestions-container--open {
+    display: block;
+}
+
+.react-autosuggest__suggestions-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.react-autosuggest__suggestion {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.react-autosuggest__suggestion--highlighted {
+    background-color: #4CAF50;
     color: #fff;
 }

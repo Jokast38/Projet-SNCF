@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import './css/CarUpdate.css';
 
 const CarUpdate = () => {
@@ -34,10 +35,10 @@ const CarUpdate = () => {
       if (response.data.length > 0) {
         setCar(response.data[0]);
       } else {
-        console.error("No car found with the specified parameters.");
+        toast.error("No car found with the specified parameters.");
       }
     } catch (error) {
-      console.error('Error fetching car data', error);
+      toast.error('Error fetching car data');
     }
   };
 
@@ -52,10 +53,19 @@ const CarUpdate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://127.0.0.1:8000/car/${make}/${model}/${year}`, car);
-      navigate('/cars');
+      await axios.put(`http://127.0.0.1:8000/car/${make}/${model}/${year}`, car, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      toast.success('Car updated successfully');
+      navigate('/'); // Rediriger vers la page d'accueil
     } catch (error) {
-      console.error('Error updating car data', error);
+      if (error.response && error.response.data) {
+        toast.error(`Error updating car data: ${JSON.stringify(error.response.data.detail)}`);
+      } else {
+        toast.error('Error updating car data');
+      }
     }
   };
 

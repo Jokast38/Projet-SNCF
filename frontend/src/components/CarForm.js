@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import './css/CarForm.css';
 
 const CarForm = () => {
@@ -25,10 +26,15 @@ const CarForm = () => {
                 }
             });
             console.log(response.data);
-            alert('Voiture ajoutée avec succès');
+            toast.success('Voiture ajoutée avec succès');
+            setFormData({
+                make: '',
+                model: '',
+                year: ''
+            });
         } catch (error) {
             console.error(error);
-            alert('Erreur lors de l\'ajout de la voiture');
+            toast.error('Erreur lors de l\'ajout de la voiture');
         }
     };
 

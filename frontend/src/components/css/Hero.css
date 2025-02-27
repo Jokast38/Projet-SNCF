@@ -54,8 +54,7 @@
     margin: 5px 0;
 }
 
-
-.hero-card .btn-delete-car {
+.hero-card .btn-delete-car .btn-update-car {
     display: inline-block;
     font-size: 16px;
     font-weight: 900;
@@ -75,17 +74,25 @@
     background: #d33f34;
 }
 
-
 .btn-delete-car, .btn-update-car {
-    padding: 10px 20px;
-    background-color: #4CAF50;
+    padding: 12px 18px;
+    font-size: 16px;
+    font-weight: 900;
+    text-transform: uppercase;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .btn-delete-car:hover, .btn-update-car:hover {
+    margin-top: 20px;
+    transition: all .3s ease-in-out;
+}
+
+.btn-update-car {
+    background-color: #4CAF50;
+    margin-left: 10px; /* Ajoute un espace entre les boutons */
+
+}
+
+.btn-update-car:hover {
     background-color: #45a049;
-  }
+}

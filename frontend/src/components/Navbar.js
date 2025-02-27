@@ -7,7 +7,7 @@ const Navbar = () => {
         <nav className="navbar">
             <div className="navbar-container">
                 <Link to="/" className="navbar-logo">
-                    Projet CARSNET
+                    Projet CARNET
                 </Link>
                 <ul className="nav-menu">
                     <li className="nav-item">
