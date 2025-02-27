@@ -1,4 +1,4 @@
-# Projet SNCF
+# Projet CarNet
 
 Ce projet est une application web pour gérer une liste de voitures, permettant d'ajouter, afficher et supprimer des voitures. L'application est construite avec React pour le frontend et FastAPI pour le backend.
 
