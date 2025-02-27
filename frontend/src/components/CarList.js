@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { FaTrash } from 'react-icons/fa'; // Importer l'icône de corbeille
 import './css/CarList.css';
 import $ from 'jquery';
 import 'slick-carousel/slick/slick.css';
@@ -12,6 +13,8 @@ const CarList = () => {
     const [filters, setFilters] = useState({
         make: ''
     });
+    const [currentPage, setCurrentPage] = useState(1);
+    const carsPerPage = 10;
 
     const fetchCars = useCallback(async () => {
         try {
@@ -85,6 +88,24 @@ const CarList = () => {
         return `${url}`;
     };
 
+    // Fonction pour supprimer une voiture
+    const deleteCar = async (carId) => {
+        try {
+            await axios.delete(`http://127.0.0.1:8000/cars/${carId}`);
+            setCars(cars.filter(car => car.id !== carId));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    // Calculer les voitures à afficher pour la page actuelle
+    const indexOfLastCar = currentPage * carsPerPage;
+    const indexOfFirstCar = indexOfLastCar - carsPerPage;
+    const currentCars = cars.slice(indexOfFirstCar, indexOfLastCar);
+
+    // Changer de page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
         <div className="car-list">
             <div className="search-container">
@@ -96,7 +117,7 @@ const CarList = () => {
             </div>
             
             <div className="car-cards">
-                {cars.map(car => (
+                {currentCars.map(car => (
                     <div key={car.id} className="car-card">
                         <Link to={`/car/${car.make}/${car.model}/${car.year}`}>
                             <h3>{car.make} {car.model}</h3>
@@ -112,8 +133,19 @@ const CarList = () => {
                             <p>Type de carburant: {car.fuel_type}</p>
                             <p>Consommation sur autoroute: {car.highway_mpg} MPG</p>
                         </Link>
-                        <Link to={`/car/${car.make}/${car.model}/${car.year}`} className="btn">Voir Détails<span className="bg"></span></Link>
+                        <div className="card-actions">
+                            <Link to={`/car/${car.make}/${car.model}/${car.year}`} className="btn">Voir Détails<span className="bg"></span></Link>
+                            <FaTrash onClick={() => deleteCar(car.id)} className="btn-delete" />
+                        </div>
                     </div>
+                ))}
+            </div>
+
+            <div className="pagination">
+                {Array.from({ length: Math.ceil(cars.length / carsPerPage) }, (_, index) => (
+                    <button key={index + 1} onClick={() => paginate(index + 1)}>
+                        {index + 1}
+                    </button>
                 ))}
             </div>
         </div>

@@ -54,19 +54,18 @@ def car_serializer(car) -> dict:
         "make": car["make"],
         "model": car["model"],
         "year": car["year"],
-        "price": car["price"],
+        "price": car.get("price", 0.0),  # Utiliser get pour fournir une valeur par défaut
         "image": car.get("image", ""),
-        "city_mpg": car["city_mpg"],
+        "city_mpg": car.get("city_mpg", 0),  # Utiliser get pour fournir une valeur par défaut
         "car_class": car.get("class", ""),  
-        "combination_mpg": car["combination_mpg"],
-        "cylinders": car["cylinders"],
-        "displacement": car["displacement"],
-        "drive": car["drive"],
-        "fuel_type": car["fuel_type"],
-        "highway_mpg": car["highway_mpg"],
-        "transmission": car["transmission"]
+        "combination_mpg": car.get("combination_mpg", 0),  # Utiliser get pour fournir une valeur par défaut
+        "cylinders": car.get("cylinders", 0),  # Utiliser get pour fournir une valeur par défaut
+        "displacement": car.get("displacement", 0.0),  # Utiliser get pour fournir une valeur par défaut
+        "drive": car.get("drive", ""),
+        "fuel_type": car.get("fuel_type", ""),
+        "highway_mpg": car.get("highway_mpg", 0),  # Utiliser get pour fournir une valeur par défaut
+        "transmission": car.get("transmission", "")
     }
-
 # 📌 3. Routes API 🚗
 # ➤ Ajouter une voiture via un formulaire
 @app.post("/import-car", response_model=dict)

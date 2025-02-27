@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom'; // Remplacer useHistory par useNavigate
 import Slider from 'react-slick';
 import './css/Hero.css';
 import 'slick-carousel/slick/slick.css';
@@ -9,6 +9,7 @@ import 'slick-carousel/slick/slick-theme.css';
 const Hero = () => {
     const { make, model, year } = useParams();
     const [car, setCar] = useState(null);
+    const navigate = useNavigate(); // Utiliser useNavigate
 
     useEffect(() => {
         fetchCar();
@@ -47,6 +48,15 @@ const Hero = () => {
         url.searchParams.append("angle", `${angle}`);
 
         return `${url}`;
+    };
+
+    const deleteCar = async () => {
+        try {
+            await axios.delete(`http://127.0.0.1:8000/cars/${car.id}`);
+            navigate('/cars'); // Utiliser navigate
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const settings = {
@@ -110,6 +120,7 @@ const Hero = () => {
                         <span className="info-title">Consommation sur autoroute:</span>
                         <span>{car.highway_mpg} MPG</span>
                     </div>
+                    <button onClick={deleteCar} className="btn-delete-car">Supprimer cette voiture</button>
                 </div>
             ) : (
                 <p>Chargement...</p>

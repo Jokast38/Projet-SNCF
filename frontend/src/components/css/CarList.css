@@ -1,13 +1,20 @@
-/* Styles pour centrer le titre et la barre de recherche */
-.search-container {
+/* Styles pour centrer le contenu */
+.car-list {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.search-container {
     margin-bottom: 20px;
 }
 
 .search-container h2 {
-    margin-bottom: 20px;
+    margin-top: 0;
+    justify-content: center;
+    text-align: center;
 }
 
 .search-container input {
@@ -96,7 +103,6 @@
     border: 1px solid #FF3100;
     border-radius: 20px;
     overflow: hidden;
-    margin-top: 10px;
 }
 
 .car-card .btn .bg {
@@ -116,4 +122,46 @@
 
 .car-card .btn:hover .bg {
     opacity: 1;
+}
+
+/* Styles pour le bouton Supprimer */
+.car-card .btn-delete {
+    font-size: 20px;
+    color: #FF3100;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+.car-card .btn-delete:hover {
+    color: #d33f34;
+}
+
+/* Styles pour les actions de la carte */
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Styles pour la pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 10px 15px;
+    margin: 0 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.pagination button:hover {
+    background-color: #007bff;
+    color: #fff;
 }
