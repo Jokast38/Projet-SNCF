@@ -16,13 +16,13 @@ const Navbar = () => {
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/cars" className="nav-links">
-                           Modifier une voiture
+                        <Link to="/add-car" className="nav-links">
+                            Ajouter une voiture
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/add-car" className="nav-links">
-                            Ajouter une voiture
+                        <Link to="/dashboard" className="nav-links">
+                            Tableau de bord
                         </Link>
                     </li>
                 </ul>

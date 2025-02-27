@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom'; // Remplacer useHistory par useNavigate
+import { useParams, useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import './css/Hero.css';
 import 'slick-carousel/slick/slick.css';
@@ -9,7 +9,7 @@ import 'slick-carousel/slick/slick-theme.css';
 const Hero = () => {
     const { make, model, year } = useParams();
     const [car, setCar] = useState(null);
-    const navigate = useNavigate(); // Utiliser useNavigate
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchCar();
@@ -52,11 +52,15 @@ const Hero = () => {
 
     const deleteCar = async () => {
         try {
-            await axios.delete(`http://127.0.0.1:8000/cars/${car.id}`);
-            navigate('/cars'); // Utiliser navigate
+            await axios.delete(`http://127.0.0.1:8000/cars/${car._id}`);
+            navigate('/cars');
         } catch (error) {
             console.error(error);
         }
+    };
+
+    const updateCar = () => {
+        navigate(`/car/${make}/${model}/${year}/update`);
     };
 
     const settings = {
@@ -121,6 +125,7 @@ const Hero = () => {
                         <span>{car.highway_mpg} MPG</span>
                     </div>
                     <button onClick={deleteCar} className="btn-delete-car">Supprimer cette voiture</button>
+                    <button onClick={updateCar} className="btn-update-car">Mettre à jour</button>
                 </div>
             ) : (
                 <p>Chargement...</p>

@@ -30,6 +30,22 @@ cars_collection = db["cars"]
 API_NINJAS_KEY = os.getenv("API_NINJAS_KEY")
 API_NINJAS_URL = os.getenv("API_NINJAS_URL")
 
+# CarUpdate pour la mise à jour des voitures
+class CarUpdate(BaseModel):
+    make: Optional[str]
+    model: Optional[str]
+    year: Optional[int]
+    price: Optional[float]
+    power: Optional[float]
+    type: Optional[str]
+    city_mpg: Optional[int]
+    highway_mpg: Optional[int]
+    combination_mpg: Optional[int]
+    cylinders: Optional[int]
+    displacement: Optional[float]
+    transmission: Optional[str]
+    fuel_type: Optional[str]
+    
 # Modèle Pydantic pour la validation des données
 class Car(BaseModel):
     make: str
@@ -46,6 +62,7 @@ class Car(BaseModel):
     fuel_type: str
     highway_mpg: int
     transmission: str
+    power: Optional[float] = None  # Ajouter le champ power
 
 # Convertisseur BSON -> JSON
 def car_serializer(car) -> dict:
@@ -149,6 +166,82 @@ async def delete_car(car_id: str):
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Voiture non trouvée")
     return {"message": "Voiture supprimée"}
+
+@app.put("/car/{make}/{model}/{year}", response_model=dict)
+async def update_car(make: str, model: str, year: int, car_update: CarUpdate):
+    update_data = {k: v for k, v in car_update.dict().items() if v is not None}
+    result = await cars_collection.update_one(
+        {"make": make, "model": model, "year": year},
+        {"$set": update_data}
+    )
+    if result.modified_count == 1:
+        updated_car = await cars_collection.find_one({"make": make, "model": model, "year": year})
+        updated_car["_id"] = str(updated_car["_id"])
+        return updated_car
+    raise HTTPException(status_code=404, detail="Car not found")
+
+
+# ➤ Calculer le nombre total de véhicules
+@app.get("/total-vehicles", response_model=dict)
+async def get_total_vehicles():
+    total_vehicles = await cars_collection.count_documents({})
+    return {"total": total_vehicles}
+
+# ➤ Moyenne des puissances par marque/modèle
+@app.get("/average-power-by-make-model", response_model=List[dict])
+async def get_average_power_by_make_model():
+    pipeline = [
+        {
+            "$group": {
+                "_id": {"make": "$make", "model": "$model"},
+                "average_power": {"$avg": "$power"}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Répartition des véhicules par année
+@app.get("/vehicles-by-year", response_model=List[dict])
+async def get_vehicles_by_year():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$year",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Répartition des véhicules par marque
+@app.get("/vehicles-by-make", response_model=List[dict])
+async def get_vehicles_by_make():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$make",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Répartition des types de véhicules
+@app.get("/vehicles-by-type", response_model=List[dict])
+async def get_vehicles_by_type():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$type",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
 
 # ➤ Lancer le serveur
 if __name__ == "__main__":

@@ -18,9 +18,9 @@ db = client["project_cars"]
 cars_collection = db["cars"]
 
 # Liste des marques, modèles et années à utiliser pour les requêtes
-makes = ["Toyota", "Honda", "Ford", "Chevrolet", "Nissan"]
-models = ["Camry", "Civic", "F-150", "Silverado", "Altima"]
-years = [2020, 2021, 2022]
+makes = ["Toyota", "Honda", "Ford", "Chevrolet", "Nissan", "BMW", "Mercedes", "Audi", "Volkswagen", "Hyundai"]
+models = ["Camry", "Civic", "F-150", "Silverado", "Altima", "3 Series", "C-Class", "A4", "Golf", "Elantra"]
+years = [2020, 2021, 2022, 2023]
 
 # Fonction pour récupérer les données de l'API
 def fetch_car_data(make, model, year):
@@ -46,9 +46,16 @@ for make in makes:
             car_data = fetch_car_data(make, model, year)
             if car_data:
                 for car in car_data:
-                    # Ajouter un champ price par défaut si manquant
+                    # Ajouter des champs par défaut si manquants
+                    car["make"] = make
+                    car["model"] = model
+                    car["year"] = year
                     if "price" not in car:
                         car["price"] = 0.0
+                    if "power" not in car:
+                        car["power"] = 0.0
+                    if "type" not in car:
+                        car["type"] = "Unknown"
                     cars_collection.insert_one(car)
             # Attendre 1 seconde entre les requêtes pour éviter de surcharger l'API
             time.sleep(1)

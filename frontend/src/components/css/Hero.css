@@ -74,3 +74,18 @@
 .hero-card .btn-delete-car:hover {
     background: #d33f34;
 }
+
+
+.btn-delete-car, .btn-update-car {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .btn-delete-car:hover, .btn-update-car:hover {
+    background-color: #45a049;
+  }
