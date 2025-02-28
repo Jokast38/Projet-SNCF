@@ -34,6 +34,11 @@ Ce projet est une application web pour gérer une liste de voitures, permettant 
 
 3. Installez les dépendances :
     ```bash
+    pip install -r requirements.txt    
+    ```
+ ou encore 
+
+    ```bash
     pip install fastapi
     pip install uvicorn
     pip install pymongo
