@@ -21,8 +21,8 @@ Ce projet est une application web pour gérer une liste de voitures, permettant 
 
 1. Clonez le dépôt :
     ```bash
-    git clone https://github.com/votre-utilisateur/projet-sncf.git
-    cd projet-sncf/backend
+    git clone https://github.com/Jokast38/Projet-CarNet.git
+    cd projet-CarNet/backend
     ```
 
 2. Configurez les variables d'environnement en créant un fichier `.env` :
