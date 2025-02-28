@@ -132,7 +132,12 @@ async def get_cars(
         if max_price:
             filters["price"]["$lte"] = max_price
 
+<<<<<<< HEAD
     cars = await cars_collection.find(filters).to_list(100)
+=======
+    cursor = cars_collection.find(query)
+    cars = await cursor.to_list(length=None)
+>>>>>>> jokast
     return [car_serializer(car) for car in cars]
 
 # ➤ Récupérer une voiture par ID
@@ -151,6 +156,85 @@ async def delete_car(car_id: str):
         raise HTTPException(status_code=404, detail="Voiture non trouvée")
     return {"message": "Voiture supprimée"}
 
+<<<<<<< HEAD
+=======
+@app.put("/car/{make}/{model}/{year}", response_model=dict)
+async def update_car(make: str, model: str, year: int, car_update: CarUpdate):
+    update_data = {k: v for k, v in car_update.dict().items() if v is not None}
+    result = await cars_collection.update_one(
+        {"make": make, "model": model, "year": year},
+        {"$set": update_data}
+    )
+    if result.modified_count == 1:
+        updated_car = await cars_collection.find_one({"make": make, "model": model, "year": year})
+        updated_car["_id"] = str(updated_car["_id"])
+        return updated_car
+    raise CarUpdateException(make, model, year)
+
+# ➤ Calculer le nombre total de véhicules
+@app.get("/total-vehicles", response_model=dict)
+async def get_total_vehicles():
+    total_vehicles = await cars_collection.count_documents({})
+    return {"total": total_vehicles}
+
+# ➤ Moyenne des puissances par marque/modèle
+@app.get("/average-power-by-make-model", response_model=List[dict])
+async def get_average_power_by_make_model():
+    pipeline = [
+        {
+            "$group": {
+                "_id": {"make": "$make", "model": "$model"},
+                "average_power": {"$avg": "$power"}
+            }
+        }
+    ]
+    cursor = cars_collection.aggregate(pipeline)
+    result = await cursor.to_list(length=None)
+    return result
+
+# ➤ Répartition des véhicules par année
+@app.get("/vehicles-by-year", response_model=List[dict])
+async def get_vehicles_by_year():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$year",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Répartition des véhicules par marque
+@app.get("/vehicles-by-make", response_model=List[dict])
+async def get_vehicles_by_make():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$make",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Répartition des types de véhicules
+@app.get("/vehicles-by-type", response_model=List[dict])
+async def get_vehicles_by_type():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$type",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+>>>>>>> jokast
 # ➤ Lancer le serveur
 if __name__ == "__main__":
     import uvicorn

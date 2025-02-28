@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
@@ -10,6 +10,7 @@ const Hero = () => {
     const { make, model, year } = useParams();
     const [car, setCar] = useState(null);
 
+<<<<<<< HEAD
     useEffect(() => {
         const fetchCar = async () => {
             try {
@@ -29,6 +30,27 @@ const Hero = () => {
         fetchCar();
     }, [make, model, year]);
 
+=======
+    const fetchCar = useCallback(async () => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/cars`, {
+                params: { make, model, year }
+            });
+            if (response.data.length > 0) {
+                setCar(response.data[0]);
+            } else {
+                console.error("No car found with the specified parameters.");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }, [make, model, year]);
+
+    useEffect(() => {
+        fetchCar();
+    }, [fetchCar]);
+
+>>>>>>> jokast
     const createCarImage = (car, angle = '29') => {
         const url = new URL("https://cdn.imagin.studio/getimage");
         const { make, year, model } = car;
@@ -73,6 +95,7 @@ const Hero = () => {
                         <div>
                             <img src={createCarImage(car, '34')} alt={`${car.make} ${car.model}`} />
                         </div>
+                       
                     </Slider>
                     <div className="info">
                         <span className="info-title">Année:</span>

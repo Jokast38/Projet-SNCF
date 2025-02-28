@@ -1,0 +1,102 @@
+.footer {
+    background: #333;
+    color: #fff;
+    height: auto;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    padding-top: 40px;
+}
+
+.footer .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Aligner les éléments en haut */
+    flex-wrap: wrap;
+    padding: 20px 50px;
+}
+
+.footer .footer-section {
+    flex: 1;
+    padding: 10px;
+}
+
+.footer .logo-text {
+    font-size: 30px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.footer .contact span {
+    display: flex;
+    align-items: center; /* Aligner les icônes et le texte au centre verticalement */
+    margin: 10px 0;
+}
+
+.footer .contact span i {
+    margin-right: 10px; /* Ajouter un espace entre l'icône et le texte */
+}
+
+.footer .socials a {
+    margin: 0 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 24px; /* Assurez-vous que la taille de la police est définie */
+}
+
+.footer .socials a:hover {
+    color: #4CAF50;
+}
+
+.footer .links ul {
+    list-style: none;
+}
+
+.footer .links ul a {
+    text-decoration: none;
+    color: #fff;
+    margin: 10px 0;
+    display: block;
+}
+
+.footer .links ul a:hover {
+    color: #4CAF50;
+}
+
+.footer .contact-form .text-input {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.footer .contact-form .btn {
+    background: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center; /* Aligner l'icône et le texte au centre verticalement */
+}
+
+.footer .contact-form .btn i {
+    margin-right: 10px; /* Ajouter un espace entre l'icône et le texte */
+}
+
+.footer .contact-form .btn:hover {
+    background: #45a049;
+}
+
+.footer .footer-bottom {
+    background: #222;
+    color: #fff;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
