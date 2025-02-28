@@ -12,7 +12,7 @@ const Footer = () => {
                         CarNet est une plateforme dédiée à la vente et à l'achat de voitures. Nous offrons une large gamme de véhicules pour répondre à tous vos besoins.
                     </p>
                     <div className="contact">
-                        <span><FaPhone /> &nbsp; +123-456-789</span>
+                        <span><FaPhone /> &nbsp; +133-456-789</span>
                         <span><FaEnvelope /> &nbsp; info@carnet.com</span>
                     </div>
                     <div className="socials">
