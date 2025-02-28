@@ -156,8 +156,9 @@ async def get_cars(make: Optional[str] = None, model: Optional[str] = None, year
     if year:
         query["year"] = year
 
-    cars = list(cars_collection.find(query))
-    return cars
+    cursor = cars_collection.find(query)
+    cars = await cursor.to_list(length=None)
+    return [car_serializer(car) for car in cars]
 
 # ➤ Récupérer une voiture par ID
 @app.get("/cars/{car_id}", response_model=dict)
@@ -205,7 +206,8 @@ async def get_average_power_by_make_model():
             }
         }
     ]
-    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    cursor = cars_collection.aggregate(pipeline)
+    result = await cursor.to_list(length=None)
     return result
 
 # ➤ Répartition des véhicules par année

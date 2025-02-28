@@ -8,6 +8,7 @@ import CarForm from './components/CarForm';
 import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import CarUpdate from './components/CarUpdate';
+import Footer from './components/Footer';
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/car/:make/:model/:year/update" element={<CarUpdate />} />
             </Routes>
+            <Footer />
         </Router>
     );
 }

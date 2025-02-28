@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -23,11 +23,7 @@ const CarUpdate = () => {
     fuel_type: ''
   });
 
-  useEffect(() => {
-    fetchCar();
-  }, [make, model, year]);
-
-  const fetchCar = async () => {
+  const fetchCar = useCallback(async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/cars`, {
         params: { make, model, year }
@@ -40,7 +36,11 @@ const CarUpdate = () => {
     } catch (error) {
       toast.error('Error fetching car data');
     }
-  };
+  }, [make, model, year]);
+
+  useEffect(() => {
+    fetchCar();
+  }, [fetchCar]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
