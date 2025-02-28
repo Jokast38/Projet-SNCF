@@ -132,12 +132,8 @@ async def get_cars(
         if max_price:
             filters["price"]["$lte"] = max_price
 
-<<<<<<< HEAD
-    cars = await cars_collection.find(filters).to_list(100)
-=======
     cursor = cars_collection.find(query)
     cars = await cursor.to_list(length=None)
->>>>>>> jokast
     return [car_serializer(car) for car in cars]
 
 # ➤ Récupérer une voiture par ID
@@ -156,8 +152,6 @@ async def delete_car(car_id: str):
         raise HTTPException(status_code=404, detail="Voiture non trouvée")
     return {"message": "Voiture supprimée"}
 
-<<<<<<< HEAD
-=======
 @app.put("/car/{make}/{model}/{year}", response_model=dict)
 async def update_car(make: str, model: str, year: int, car_update: CarUpdate):
     update_data = {k: v for k, v in car_update.dict().items() if v is not None}
@@ -234,7 +228,6 @@ async def get_vehicles_by_type():
     result = await cars_collection.aggregate(pipeline).to_list(length=None)
     return result
 
->>>>>>> jokast
 # ➤ Lancer le serveur
 if __name__ == "__main__":
     import uvicorn
