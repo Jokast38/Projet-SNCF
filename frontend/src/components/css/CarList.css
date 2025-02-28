@@ -5,37 +5,46 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
+    background-color: #1e1e1e; /* Couleur de fond sombre */
+    color: #fff; /* Couleur du texte en blanc */
 }
 
 .search-container {
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .search-container h2 {
     margin-top: 0;
-    justify-content: center;
-    text-align: center;
-}
-
-.search-container {
-    text-align: center;
-    margin-bottom: 20px;
+    color: #fff; /* Couleur du texte en blanc */
 }
 
 .search-container input {
     padding: 10px;
     font-size: 16px;
     margin-right: 10px;
+    border: 1px solid #555; /* Bordure plus sombre */
+    border-radius: 5px;
+    background-color: #4c4c4c; /* Couleur de fond de l'input */
+    color: #fff; /* Couleur du texte en blanc */
+}
+
+.search-container input::placeholder {
+    color: #bbb; /* Couleur du placeholder */
 }
 
 .search-container button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
+    border: none;
+    background-color: #6c757d; /* Couleur de fond grise */
+    color: white;
+    border-radius: 5px;
 }
 
 .search-container button:hover {
-    background-color: #0056b3;
+    background-color: #5a6268; /* Couleur de fond grise plus foncée au survol */
 }
 
 /* Styles pour les cartes de voitures */
@@ -46,15 +55,16 @@
 }
 
 .car-card {
-    border: 1px solid #ccc;
+    border: 1px solid #555; /* Bordure plus sombre */
     border-radius: 10px;
     margin: 10px;
     padding: 20px;
     width: 300px;
-    box-shadow: 0 10px 20px rgba(0,0,0,.3);
+    box-shadow: 0 10px 20px rgba(0,0,0,.5); /* Ombre plus sombre */
     transition: transform 0.2s;
     text-align: center;
-    background: #f5f5f5;
+    background: #2c2c2c; /* Couleur de fond de la carte */
+    color: #fff; /* Couleur du texte en blanc */
 }
 
 .car-card:hover {
@@ -68,10 +78,12 @@
 
 .car-card h3 {
     margin-top: 0;
+    color: #fff; /* Couleur du texte en blanc */
 }
 
 .car-card p {
     margin: 5px 0;
+    color: #bbb; /* Couleur du texte en gris clair */
 }
 
 /* Retirer le soulignement des liens et remettre les textes à la normale */
@@ -167,7 +179,6 @@
     background-color: #555;
 }
 
-
 .btn-edit {
     padding: 10px;
     font-size: 16px;
@@ -186,6 +197,7 @@
 h2 {
     margin-top: 0;
     text-align: center;
+    color: #fff; /* Couleur du texte en blanc */
 }
 
 .filter-buttons {
@@ -218,8 +230,10 @@ h2 {
     width: 100%;
     padding: 10px;
     font-size: 16px;
-    border: 1px solid #ccc;
+    border: 1px solid #555; /* Bordure plus sombre */
     border-radius: 4px;
+    background-color: #4c4c4c; /* Couleur de fond de l'input */
+    color: #fff; /* Couleur du texte en blanc */
 }
 
 .react-autosuggest__input--focused {
@@ -233,10 +247,10 @@ h2 {
     left: 0;
     right: 0;
     z-index: 2;
-    border: 1px solid #ccc;
-    background-color: #fff;
+    border: 1px solid #555; /* Bordure plus sombre */
+    background-color: #2c2c2c; /* Couleur de fond sombre */
     border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Ombre plus sombre */
 }
 
 .react-autosuggest__suggestions-container--open {
@@ -252,6 +266,7 @@ h2 {
 .react-autosuggest__suggestion {
     padding: 10px;
     cursor: pointer;
+    color: #fff; /* Couleur du texte en blanc */
 }
 
 .react-autosuggest__suggestion--highlighted {

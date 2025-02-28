@@ -1,45 +1,54 @@
 .car-update-container {
-    padding: 20px;
-    background-color: #1e1e1e;
-    color: #fff;
-    text-align: center;
-  }
-  
-  .car-update-container h1 {
-    margin-bottom: 20px;
-  }
-  
-  .car-update-container form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .car-update-container label {
-    margin-bottom: 10px;
-    width: 100%;
-    max-width: 400px;
-    text-align: left;
-  }
-  
-  .car-update-container input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .car-update-container button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-  
-  .car-update-container button:hover {
-    background-color: #45a049;
-  }
+  padding: 20px;
+  background-color: #1e1e1e; /* Couleur de fond sombre */
+  color: #fff; /* Couleur du texte en blanc */
+  text-align: center;
+}
+
+.car-update-container h1 {
+  margin-bottom: 20px;
+  color: #fff; /* Couleur du texte en blanc */
+}
+
+.car-update-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.car-update-container label {
+  margin-bottom: 10px;
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+  color: #fff; /* Couleur du texte en blanc */
+}
+
+.car-update-container input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #555; /* Bordure plus sombre */
+  background-color: #4c4c4c; /* Couleur de fond de l'input */
+  color: #fff; /* Couleur du texte en blanc */
+}
+
+.car-update-container input::placeholder {
+  color: #bbb; /* Couleur du placeholder */
+}
+
+.car-update-container button {
+  padding: 10px 20px;
+  background-color: #6c757d; /* Couleur de fond grise */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.car-update-container button:hover {
+  background-color: #5a6268; /* Couleur de fond grise plus foncée au survol */
+}
