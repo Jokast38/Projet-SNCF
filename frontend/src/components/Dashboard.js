@@ -11,6 +11,11 @@ const Dashboard = () => {
   const [vehiclesByYear, setVehiclesByYear] = useState([]);
   const [vehiclesByMake, setVehiclesByMake] = useState([]);
   const [vehiclesByType, setVehiclesByType] = useState([]);
+  const [vehiclesByFuelType, setVehiclesByFuelType] = useState([]);
+  const [vehiclesByClass, setVehiclesByClass] = useState([]);
+  const [vehiclesByTransmission, setVehiclesByTransmission] = useState([]);
+  const [vehiclesByDrive, setVehiclesByDrive] = useState([]);
+  const [vehiclesByCityMpg, setVehiclesByCityMpg] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -37,6 +42,26 @@ const Dashboard = () => {
       const vehiclesByTypeResponse = await axios.get('http://127.0.0.1:8000/vehicles-by-type');
       console.log('Vehicles by Type:', vehiclesByTypeResponse.data);
       setVehiclesByType(vehiclesByTypeResponse.data);
+
+      const vehiclesByFuelTypeResponse = await axios.get('http://127.0.0.1:8000/vehicles-by-fuel-type');
+      console.log('Vehicles by Fuel Type:', vehiclesByFuelTypeResponse.data);
+      setVehiclesByFuelType(vehiclesByFuelTypeResponse.data);
+
+      const vehiclesByClassResponse = await axios.get('http://127.0.0.1:8000/vehicles-by-class');
+      console.log('Vehicles by Class:', vehiclesByClassResponse.data);
+      setVehiclesByClass(vehiclesByClassResponse.data);
+
+      const vehiclesByTransmissionResponse = await axios.get('http://127.0.0.1:8000/vehicles-by-transmission');
+      console.log('Vehicles by Transmission:', vehiclesByTransmissionResponse.data);
+      setVehiclesByTransmission(vehiclesByTransmissionResponse.data);
+
+      const vehiclesByDriveResponse = await axios.get('http://127.0.0.1:8000/vehicles-by-drive');
+      console.log('Vehicles by Drive:', vehiclesByDriveResponse.data);
+      setVehiclesByDrive(vehiclesByDriveResponse.data);
+
+      const vehiclesByCityMpgResponse = await axios.get('http://127.0.0.1:8000/vehicles-by-city-mpg');
+      console.log('Vehicles by City MPG:', vehiclesByCityMpgResponse.data);
+      setVehiclesByCityMpg(vehiclesByCityMpgResponse.data);
     } catch (error) {
       console.error('Error fetching data', error);
     }
@@ -119,6 +144,71 @@ const Dashboard = () => {
             </BarChart>
           </ResponsiveContainer>
         </div>
+        {/* New aggregations */}
+        <div className="dashboard-section">
+            <h2>Répartition des véhicules par type de carburant</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={vehiclesByFuelType}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="_id" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="count" fill="#FFBB28" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="dashboard-section">
+            <h2>Répartition des véhicules par classe</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={vehiclesByClass}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="_id" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="count" fill="#FF8042" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="dashboard-section">
+            <h2>Répartition des véhicules par transmission</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={vehiclesByTransmission}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="_id" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="count" fill="#0088FE" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="dashboard-section">
+            <h2>Répartition des véhicules par type de traction</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={vehiclesByDrive}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="_id" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="count" fill="#00C49F" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="dashboard-section">
+            <h2>Répartition des véhicules par économie de carburant (ville)</h2>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={vehiclesByCityMpg}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="_id" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="count" stroke="#FF8042" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
       </div>
     </div>
   );

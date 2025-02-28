@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Query, HTTPException, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from pymongo import MongoClient
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
 from typing import List, Optional
@@ -29,8 +28,6 @@ MONGO_URI = os.getenv("MONGO_URI")
 client = AsyncIOMotorClient(MONGO_URI)
 db = client["project_cars"]
 cars_collection = db["cars"]
-API_NINJAS_KEY = os.getenv("API_NINJAS_KEY")
-API_NINJAS_URL = os.getenv("API_NINJAS_URL")
 
 # CarUpdate pour la mise à jour des voitures
 class CarUpdate(BaseModel):
@@ -47,7 +44,7 @@ class CarUpdate(BaseModel):
     displacement: Optional[float]
     transmission: Optional[str]
     fuel_type: Optional[str]
-    
+
 # Modèle Pydantic pour la validation des données
 class Car(BaseModel):
     make: str
@@ -251,6 +248,125 @@ async def get_vehicles_by_type():
     ]
     result = await cars_collection.aggregate(pipeline).to_list(length=None)
     return result
+
+# ➤ Répartition des véhicules par type de carburant
+@app.get("/vehicles-by-fuel-type", response_model=List[dict])
+async def get_vehicles_by_fuel_type():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$fuel_type",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Répartition des véhicules par classe
+@app.get("/vehicles-by-class", response_model=List[dict])
+async def get_vehicles_by_class():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$car_class",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Répartition des véhicules par transmission
+@app.get("/vehicles-by-transmission", response_model=List[dict])
+async def get_vehicles_by_transmission():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$transmission",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Moyenne de l'économie de carburant par type de carburant
+@app.get("/average-fuel-economy-by-fuel-type", response_model=List[dict])
+async def get_average_fuel_economy_by_fuel_type():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$fuel_type",
+                "average_city_mpg": {"$avg": "$city_mpg"},
+                "average_highway_mpg": {"$avg": "$highway_mpg"},
+                "average_combination_mpg": {"$avg": "$combination_mpg"}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Moyenne du nombre de cylindres par marque
+@app.get("/average-cylinders-by-make", response_model=List[dict])
+async def get_average_cylinders_by_make():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$make",
+                "average_cylinders": {"$avg": "$cylinders"}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Répartition des véhicules par type de transmission (traction avant, arrière ou intégrale)
+@app.get("/vehicles-by-drive", response_model=List[dict])
+async def get_vehicles_by_drive():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$drive",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Répartition des véhicules selon le kilométrage urbain (city_mpg)
+@app.get("/vehicles-by-city-mpg", response_model=List[dict])
+async def get_vehicles_by_city_mpg():
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$city_mpg",
+                "count": {"$sum": 1}
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
+# ➤ Répartition des véhicules par année de modèle (tranches d'années)
+@app.get("/vehicles-by-year-range", response_model=List[dict])
+async def get_vehicles_by_year_range():
+    pipeline = [
+        {
+            "$bucket": {
+                "groupBy": "$year",
+                "boundaries": [2000, 2005, 2010, 2015, 2020],
+                "default": "Other",
+                "output": {
+                    "count": {"$sum": 1}
+                }
+            }
+        }
+    ]
+    result = await cars_collection.aggregate(pipeline).to_list(length=None)
+    return result
+
 
 # ➤ Lancer le serveur
 if __name__ == "__main__":

@@ -23,3 +23,16 @@
     justify-content: space-around;
     align-items: center;
   }
+
+  /* Centrage du nombre de véhicules */
+.vehicle-count {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #FF7043;
+  text-align: center;
+  padding: 15px;
+  background-color: #f4f4f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+}
