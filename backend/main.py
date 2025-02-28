@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Query, HTTPException, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from pymongo import MongoClient
 from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
 from typing import List, Optional
@@ -17,7 +18,7 @@ app = FastAPI()
 # les paramètres CORS pour autoriser les requêtes depuis n'importe quelle origine
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Autorisez toutes les origines, vous pouvez restreindre cela à votre frontend
+    allow_origins=["http://localhost:3000"],  # Autorisez votre frontend
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,6 +29,8 @@ MONGO_URI = os.getenv("MONGO_URI")
 client = AsyncIOMotorClient(MONGO_URI)
 db = client["project_cars"]
 cars_collection = db["cars"]
+API_NINJAS_KEY = os.getenv("API_NINJAS_KEY")
+API_NINJAS_URL = os.getenv("API_NINJAS_URL")
 
 # CarUpdate pour la mise à jour des voitures
 class CarUpdate(BaseModel):
@@ -44,7 +47,7 @@ class CarUpdate(BaseModel):
     displacement: Optional[float]
     transmission: Optional[str]
     fuel_type: Optional[str]
-
+    
 # Modèle Pydantic pour la validation des données
 class Car(BaseModel):
     make: str
@@ -168,10 +171,15 @@ async def get_car(car_id: str):
 # ➤ Supprimer une voiture
 @app.delete("/cars/{car_id}")
 async def delete_car(car_id: str):
-    result = await cars_collection.delete_one({"_id": ObjectId(car_id)})
-    if result.deleted_count == 0:
-        raise CarNotFoundException(car_id)
-    return {"message": "Voiture supprimée"}
+    try:
+        result = await cars_collection.delete_one({"_id": ObjectId(car_id)})
+        if result.deleted_count == 0:
+            raise CarNotFoundException(car_id)
+        return {"message": "Voiture supprimée"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+
 
 @app.put("/car/{make}/{model}/{year}", response_model=dict)
 async def update_car(make: str, model: str, year: int, car_update: CarUpdate):

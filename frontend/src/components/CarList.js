@@ -220,7 +220,7 @@ const CarList = () => {
                             <img src={createCarImage(car)} alt={`${car.make} ${car.model}`} />
                         </Link>
                         <div className="card-actions">
-                            <Link to={`/car/${car.make}/${car.model}/${car.year}`} className="btn">Voir Détails<span className="bg"></span></Link>
+                            <Link to={`/car/${car.id}`} className="btn">Voir Détails<span className="bg"></span></Link>
                             <Link to={`/car/${car.make}/${car.model}/${car.year}/update`} className="btn-edit"><FaEdit /></Link>
                             <FaTrash onClick={() => deleteCar(car.id)} className="btn-delete" />
                         </div>

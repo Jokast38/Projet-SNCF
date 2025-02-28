@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './css/Hero.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -52,10 +54,18 @@ const Hero = () => {
 
     const deleteCar = async () => {
         try {
-            await axios.delete(`http://127.0.0.1:8000/cars/${car._id}`);
-            navigate('/cars');
+            if (car && car.id) {
+                await axios.delete(`http://127.0.0.1:8000/cars/${car.id}`);
+                toast.success("Suppression validée !");
+                setTimeout(() => {
+                    navigate('/');
+                }, 3000); // Redirige après 3 secondes
+            } else {
+                toast.error("Erreur: ID de la voiture non trouvé !");
+            }
         } catch (error) {
             console.error(error);
+            toast.error("Erreur lors de la suppression !");
         }
     };
 
@@ -73,6 +83,7 @@ const Hero = () => {
 
     return (
         <div className="hero-container">
+            <ToastContainer />
             {car ? (
                 <div className="hero-card">
                     <h2>{car.make} {car.model}</h2>
@@ -87,7 +98,6 @@ const Hero = () => {
                         <div>
                             <img src={createCarImage(car, '34')} alt={`${car.make} ${car.model}`} />
                         </div>
-                       
                     </Slider>
                     <div className="info">
                         <span className="info-title">Année:</span>

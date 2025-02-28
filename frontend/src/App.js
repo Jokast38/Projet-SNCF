@@ -17,7 +17,7 @@ function App() {
             <ToastContainer />
             <Routes>
                 <Route path="/" element={<CarList />} />
-                <Route path="/car/:make/:model/:year" element={<Hero />} />
+                <Route path="/car/:id" element={<Hero />} />
                 <Route path="/add-car" element={<CarForm />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/car/:make/:model/:year/update" element={<CarUpdate />} />
